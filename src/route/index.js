@@ -11,6 +11,7 @@ function APP() {
     return (
     <Router>
           <Route exact path="/about" component={About} />
+
           <Route exact path="/" component={Home} />
    </Router>
   )

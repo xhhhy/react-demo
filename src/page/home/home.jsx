@@ -2,7 +2,7 @@ import React from 'react';
 
 import Header from '../../component/header/header';
 import {Link} from 'react-router-dom';
-
+import './home.less';
 // es 5 
 const user = {name :"123",age:"123"}
 function Home() {
