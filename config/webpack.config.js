@@ -336,6 +336,7 @@ module.exports = function(webpackEnv) {
         PnpWebpackPlugin.moduleLoader(module),
       ],
     },
+     //设置开发者工具的端口号,不设置则默认为8080端口
     module: {
       strictExportPresence: true,
       rules: [

@@ -48,7 +48,7 @@ class About extends React.Component {
   }
   showtitle(){
     this.props.history.push("/")
-    console.log(this)
+    //console.log(this)
     this.setState(state => ({
       isToggleOn: !state.isToggleOn
     }));
