@@ -2,7 +2,7 @@
   "name": "myapp",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "https://5b5e71c98e9f160014b88cc9.mockapi.io",
   "dependencies": {
     "@babel/core": "7.6.0",
     "@babel/plugin-transform-react-jsx-source": "^7.5.0",

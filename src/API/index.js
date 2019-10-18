@@ -1,48 +1,95 @@
-import axios from 'axios';
-import envconfig from '../envconfig/envconfig';
-/**
- * 主要params参数
- * @params method {string} 方法名
- * @params url {string} 请求地址  例如：/login 配合baseURL组成完整请求地址
- * @params baseURL {string} 请求地址统一前缀 ***需要提前指定***  例如：http://cangdu.org
- * @params timeout {number} 请求超时时间 默认 30000
- * @params params {object}  get方式传参key值
- * @params headers {string} 指定请求头信息
- * @params withCredentials {boolean} 请求是否携带本地cookies信息默认开启
- * @params validateStatus {func} 默认判断请求成功的范围 200 - 300
- * @return {Promise}
- * 其他更多拓展参看axios文档后 自行拓展
- * 注意：params中的数据会覆盖method url 参数，所以如果指定了这2个参数则不需要在params中带入
-*/
+import axios from 'axios'
+// import store from '../store'
+// import router from '../router'
 
-export default class Server {
-  axios(method, url, params){
-    console.log(params)
-    return new Promise((resolve, reject) => {
-      if(typeof params !== 'object') params = {};
-      let _option = params;
-      _option = {
-        method,
-        url,
-        baseURL: envconfig.baseURL,
-        timeout: 30000,
-        data: params||null,
-        headers: null,
-        withCredentials: true, //是否携带cookies发起请求
-        validateStatus:(status)=>{
-            console.log("status:",status)
-        },
-      }
-      console.log(_option)
-      axios.request(_option).then(res => {
-        resolve(typeof res.data === 'object' ? res.data : JSON.parse(res.data))
-      },error => {
-        if(error.response){
-            reject(error.response.data)
-        }else{
-            reject(error)
-        }
-      })
-    })
+
+// 创建实例时设置配置的默认值
+// var instance = axios.create({
+//   baseURL: 'https://5b5e71c98e9f160014b88cc9.mockapi.io'
+// });
+// 在实例已创建后修改默认值
+//instance.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+
+// 请求列表
+const requestList = []
+// 取消列表
+const CancelToken = axios.CancelToken
+let sources = {}
+
+// axios.defaults.timeout = 10000
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+
+axios.defaults.baseURL = process.env.BASE_URL
+
+axios.interceptors.request.use((config) => {
+  const request = JSON.stringify(config.url) + JSON.stringify(config.data)
+  config.cancelToken = new CancelToken((cancel) => {
+    sources[request] = cancel
+  })
+
+  if(requestList.includes(request)){
+    sources[request]('取消重复请求')
+  }else{
+    requestList.push(request)
+   // store.dispatch('changeGlobalState', {loading: true})
   }
+
+  //const token = store.getters.userInfo.token
+  // if (token) {
+  //   config.headers.token = token
+  // }
+
+  return config
+}, function (error) {
+  return Promise.reject(error)
+})
+
+axios.interceptors.response.use(function (response) {
+  const request = JSON.stringify(response.config.url) + JSON.stringify(response.config.data)
+  requestList.splice(requestList.findIndex(item => item === request), 1)
+  // if (requestList.length === 0) {
+  //   store.dispatch('changeGlobalState', {loading: false})
+  // }
+  // if (response.data.code === 900401) {
+  // console.log("认证失效，请重新登录！'")
+  //window.ELEMENT.Message.error('认证失效，请重新登录！', 1000)
+  //router.push('/login')
+  // }
+  return response
+}, function (error) {
+  if (axios.isCancel(error)) {
+    requestList.length = 0
+   // store.dispatch('changeGlobalState', {loading: false})
+    throw new axios.Cancel('cancel request')
+  } else {
+    //window.ELEMENT.Message.error('网络请求失败', 1000)
+    console.log("网络请求失败")
+  }
+  return Promise.reject(error)
+})
+
+const request = function (url, params, config, method) {
+  return new Promise((resolve, reject) => {
+    axios[method](url, params, Object.assign({}, config)).then(response => {
+      resolve(response.data)
+    }, err => {
+      if (err.Cancel) {
+        console.log(err)
+      } else {
+        reject(err)
+      }
+    }).catch(err => {
+      reject(err)
+    })
+  })
 }
+
+const post = (url, params, config = {}) => {
+  return request(url, params, config, 'post')
+}
+
+const get = (url, params, config = {}) => {
+  return request(url, params, config, 'get')
+}
+
+export {sources, post, get}
