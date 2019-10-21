@@ -5,6 +5,9 @@ import APP from './route/index';
 import * as serviceWorker from './serviceWorker';
 import "./index.css"
 
+//使用react-redux
+
+
 ReactDOM.render(<APP />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
