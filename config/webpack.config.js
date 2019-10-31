@@ -96,7 +96,7 @@ module.exports = function(webpackEnv) {
       },
       {
         loader: require.resolve('less-loader'),
-        options: cssOptions,
+        options: {javascriptEnabled:true},
       },
       {
         // Options for PostCSS as we reference these options twice
@@ -448,6 +448,7 @@ module.exports = function(webpackEnv) {
             // By default we support CSS Modules with the extension .module.css
             {
               test: cssRegex,
+             
               exclude: cssModuleRegex,
               use: getStyleLoaders({
                 importLoaders: 1,

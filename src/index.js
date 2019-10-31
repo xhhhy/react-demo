@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import APP from './route/index';
 import * as serviceWorker from './serviceWorker';
-import "./index.css"
 
 //使用react-redux
 

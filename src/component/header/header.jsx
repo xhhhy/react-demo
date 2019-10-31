@@ -1,6 +1,12 @@
 import React from 'react';
 import { Button ,Spin, Alert} from 'antd';
 import Api from '../../API/api';
+const FancyButton = React.forwardRef((props,ref)=>{
+    return <button className="FancyButton">{props.children}</button>
+})
+const ref = React.createRef()
+
+console.log(FancyButton)
 
 // const element = <div>{formtName(this.user)}</div>
 //组件传值
@@ -8,11 +14,12 @@ function formtName (user){
     //console.log(user)
     return user.name +user.age
 }
+
 class  TrData  extends React.Component{
     constructor(props){
       super(props);
     }
-  render(){
+  render(props){
     return this.props.user.map(user=>{
       return <tr key={user.id} className="text-center">
           <td>{user.id}</td>
@@ -23,7 +30,17 @@ class  TrData  extends React.Component{
       })
     
   }
-
+}
+////React 中的一个常见模式是一个组件返回多个元素。Fragments 允许你将子列表分组，而无需向 DOM 添加额外节点。
+class Frag extends React.Component {
+  render() {
+    return (
+      <React.Fragment>
+          <div>Hello</div>
+          <div>World</div>
+        </React.Fragment>
+    );
+  }
 }
 class  Header extends React.Component {
     constructor(props){
@@ -32,9 +49,8 @@ class  Header extends React.Component {
           users:[],
           isLoaded:false
         }
-      this.componentWillMount= this.componentWillMount.bind(this)
     }
-    componentWillMount(){
+    componentDidMount=()=>{
       let that = this
         try{
            Api.getData().then(res=>{
@@ -42,8 +58,8 @@ class  Header extends React.Component {
              that.setState({
                user :res.slice(98),
                loading:true
-             })
-           })
+            })
+          })
             // console.log(result)
           }catch(err){
             // console.error(err);
@@ -59,7 +75,7 @@ class  Header extends React.Component {
          />
        </Spin>
       }else{
-        return(
+        return(          
         <div >header ;{formtName(this.props.user)}
           <Button type="primary" block>
             Primary
@@ -87,6 +103,18 @@ class  Header extends React.Component {
             <TrData user={this.state.user}/>
           </tbody>
           </table>
+          <div>
+              { [1,2,3].map(res=>{
+                   return  <Button key={res}>{res}</Button>
+              })
+              }
+        </div>
+
+            <FancyButton ref={ref}>Click me!</FancyButton>
+        <div>
+             
+        </div>
+              <Frag />
         </div>
 
 
@@ -94,5 +122,4 @@ class  Header extends React.Component {
         
     }
 }
-
 export default Header

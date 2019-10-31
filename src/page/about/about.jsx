@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from "react-dom"
+import {thenmeContext} from "../../context/context"
 
 const number = [1,2,3,6]
 function NumberList(props) {
@@ -13,9 +14,20 @@ function NumberList(props) {
   );
 }
 
+//动态 Context //Context 主要应用场景在于很多不同层级的组件需要访问同样一些的数据。
+class Context extends React.Component{
+  render(){
+    let props =this.props;
+    let thems = this.context;
+    console.log(props)
+    return (
+      <button {...props} style={{backgroundColor:thems.background}}>{props.number[0]}</button>
+    )
+  }
+}
+Context.contextType = thenmeContext;
 
 class About extends React.Component {
-  
   constructor(props) {
     //在构造函数中使用时，super关键字将单独出现，并且必须在使用this关键字之前使用。super关键字也可以用来调用父对象上的函数。
     super(props);
@@ -37,7 +49,7 @@ class About extends React.Component {
       9999999999999999
     );
   }
-  componentWillUnmount() {
+  shouldComponentUpdate() {
     clearInterval(this.timerID);
   }
   tick() {
@@ -60,6 +72,7 @@ class About extends React.Component {
         <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
         <button onClick={this.showtitle}>{this.state.isToggleOn?"yes":"no"}</button>
         <ul><NumberList number={number}/></ul>
+        <Context number={number}></Context>
       </div>
     );
   }
