@@ -1,5 +1,7 @@
 import React from 'react';
 import Header from '../../component/header/header';
+// import SomePlugin from '../../component/somepubilc/somepublic';
+
 import {Link} from 'react-router-dom';
 import { Menu, Icon, Switch ,Comment,  Tooltip, Avatar} from 'antd';
 import moment from 'moment';
@@ -82,6 +84,7 @@ class Mounted extends React.Component {
     );
   }
 }
+
 class Sider extends React.Component {
     state = {
       theme: 'dark',
@@ -171,7 +174,7 @@ class Sider extends React.Component {
     }
   }
 // es 5 
-const user = {name :"123",age:"123"}
+const user = {}
 function Home() {
     if(user){
         return (
@@ -189,6 +192,7 @@ function Home() {
                 </div>
 
                 </header>
+
             </div>
           )
     }
@@ -201,6 +205,7 @@ function Home() {
       )
    
 }
+
 
 
 

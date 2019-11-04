@@ -5,6 +5,9 @@ import About from "../page/about/about";
 import Readring from "../page/rendering/rendering";
 import Home from "../page/home/home";
 import ReduxPage from "../page/reduxpage/reduxpage";
+import HelloButton from "../page/button/button";
+
+
 //如此使得我们可以使用在等待加载 lazy 组件时做优雅降级（如 loading 指示器等）。
 // const About =() => {return import("../page/about/about")}
 // const ReduxPage =() => {return import("../page/reduxpage/reduxpage")};
@@ -38,6 +41,7 @@ class APP extends React.Component{
           <Route exact path="/about" component={About} />
           <Route exact path="/about/reduxpage" component={ReduxPage} />
           <Route exact path="/readring" component={Readring} />
+          <Route exact path="/button" component={HelloButton} />
       </Router>
     )
   }
