@@ -14,12 +14,12 @@ class HelloButton extends React.Component {
     constructor(props){
         super(props)
         this.state={
-            name:"7777777777777777777777"
+            name:"777"
         }
     }
      handleClick=()=> {
          this.setState({
-             name:"888888888888888888"
+             name:"8888"
          })
       alert('Hello!');
     }
@@ -31,8 +31,8 @@ class HelloButton extends React.Component {
             <Buttons  onClick={this.handleClick} />
             <div>
             <Timeline >
-                <Timeline.Item>{this.state.name}</Timeline.Item>
-                <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
+                <Timeline.Item>{this.state.name=="777"?"123":"456"}</Timeline.Item>
+                <Timeline.Item></Timeline.Item>
                 <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
                 <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
             </Timeline>

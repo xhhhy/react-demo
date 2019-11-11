@@ -1,7 +1,7 @@
-const ActionTypes ={
-    INCREMENT : 'increment',
-    DECREMENT : 'decrement'
-}
+// const ActionTypes ={
+//     INCREMENT : 'increment',
+//     DECREMENT : 'decrement'
+// }
 
 
-export default ActionTypes
+// export default ActionTypes
